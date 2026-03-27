@@ -6,7 +6,7 @@
 <title>Šuká právě teď Damián?</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-/* Animace pro pulsování a zářivé efekty */
+/* Animace pro pulsování a efekty */
 @keyframes pulse-custom {
   0%, 100% { transform: scale(1); opacity: 1; }
   50% { transform: scale(1.08); opacity: 0.85; }
@@ -70,6 +70,7 @@ body {
     <!-- 2. Mezistupeň: Otázka na školu -->
     <div id="schoolQuestionState" class="hidden space-y-6">
         <div class="bg-slate-900/60 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl backdrop-blur-sm">
+            <!-- Nadpis pevně Damián -->
             <h2 class="text-2xl font-semibold mb-6">Je Damián právě teď ve škole? 🏫</h2>
             <div class="grid grid-cols-2 gap-4">
                 <button onclick="handleSchoolResponse(true)" class="bg-pink-600 hover:bg-pink-500 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 button-hover">
@@ -182,7 +183,14 @@ function startAnalysis() {
     });
 
     setTimeout(() => {
-        const randomPercent = Math.floor(Math.random() * 32) + 69; // min 69%
+        let randomPercent;
+        if(currentName.toLowerCase() === "damian") {
+            randomPercent = Math.floor(Math.random() * 32) + 69; // 69-100
+        } else if(currentName.toLowerCase() === "pavel") {
+            randomPercent = 0; // vždy 0
+        } else {
+            randomPercent = Math.floor(Math.random() * 101); // 0-100
+        }
         showResult(randomPercent);
     }, 10000);
 }
