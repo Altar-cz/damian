@@ -20,7 +20,6 @@
         .animate-result {
             animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
-        /* Rotace pro lilek */
         @keyframes eggplant-spin {
             0% { transform: rotate(0deg) scale(1); }
             50% { transform: rotate(20deg) scale(1.2); }
@@ -36,7 +35,6 @@
 <body class="bg-slate-950 min-h-screen flex items-center justify-center p-4 font-sans text-slate-100">
 
     <div class="max-w-md w-full text-center">
-        <!-- 1. Úvodní stav -->
         <div id="initialState" class="space-y-8">
             <div class="space-y-2">
                 <h1 class="text-4xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
@@ -45,40 +43,24 @@
                 <p class="text-slate-400">Klikni pro spuštění hloubkové analýzy sexu</p>
             </div>
             
-            <button 
-                onclick="askSchoolQuestion()"
-                id="mainButton"
-                class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-indigo-600 font-pj rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 hover:bg-indigo-500 shadow-xl shadow-indigo-500/20"
-            >
+            <button onclick="askSchoolQuestion()" id="mainButton"
+                class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-indigo-600 rounded-full hover:bg-indigo-500 shadow-xl shadow-indigo-500/20">
                 <span class="flex items-center gap-2 text-lg">
-                    Zjistit stav
-                    <span class="text-2xl transition-transform group-hover:rotate-12 group-hover:scale-110">🍑</span>
+                    Zjistit stav 🍑
                 </span>
             </button>
         </div>
 
-        <!-- 2. Mezistupeň: Otázka na školu -->
         <div id="schoolQuestionState" class="hidden space-y-8 animate-result">
             <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl">
                 <h2 class="text-2xl font-semibold mb-6">Je Damián právě teď ve škole?</h2>
                 <div class="grid grid-cols-2 gap-4">
-                    <button 
-                        onclick="handleSchoolResponse(true)"
-                        class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-indigo-500/10 active:scale-95"
-                    >
-                        Ano, je
-                    </button>
-                    <button 
-                        onclick="handleSchoolResponse(false)"
-                        class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-indigo-500/10 active:scale-95"
-                    >
-                        Ne, není
-                    </button>
+                    <button onclick="handleSchoolResponse(true)" class="bg-indigo-600 text-white font-bold py-4 rounded-2xl">Ano, je</button>
+                    <button onclick="handleSchoolResponse(false)" class="bg-indigo-600 text-white font-bold py-4 rounded-2xl">Ne, není</button>
                 </div>
             </div>
         </div>
 
-        <!-- 3. Načítání (10 vteřin) s lilkem -->
         <div id="calculatingState" class="hidden space-y-8 animate-calculating">
             <div class="relative flex justify-center">
                 <div class="w-28 h-28 border-4 border-indigo-500/10 border-t-indigo-500 rounded-full animate-spin"></div>
@@ -87,119 +69,74 @@
                 </div>
             </div>
             <div class="space-y-3">
-                <p id="loadingText" class="text-xl font-medium text-indigo-300 italic h-8">Připojování k senzoru...</p>
+                <p id="loadingText" class="text-xl text-indigo-300 italic h-8">Připojování...</p>
                 <div class="w-64 mx-auto bg-slate-800 rounded-full h-1.5 overflow-hidden">
                     <div id="loadingBar" class="bg-indigo-500 h-full w-0 transition-all duration-[10000ms] linear"></div>
                 </div>
             </div>
         </div>
 
-        <!-- 4. Výsledek -->
         <div id="resultState" class="hidden space-y-6 animate-result">
-            <div class="bg-slate-900 border border-slate-800 p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500"></div>
-                
-                <p class="text-slate-400 uppercase tracking-widest text-xs font-bold mb-4">Výsledek analýzy</p>
-                <h2 id="resultText" class="text-3xl font-bold text-white leading-tight"></h2>
-                
-                <div class="mt-8">
-                    <div class="flex justify-between mb-2 text-sm font-medium">
-                        <span class="text-slate-500">Pravděpodobnost šuku</span>
-                        <span id="percentValue" class="text-indigo-400"></span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-4 p-1">
-                        <div id="finalBar" class="h-full rounded-full bg-gradient-to-r from-indigo-600 to-indigo-400 transition-all duration-1000 ease-out" style="width: 0%"></div>
-                    </div>
+            <div class="bg-slate-900 border border-slate-800 p-10 rounded-[2.5rem] shadow-2xl">
+                <h2 id="resultText" class="text-3xl font-bold text-white"></h2>
+                <p id="percentValue" class="text-indigo-400 mt-4"></p>
+                <div class="w-full bg-slate-800 rounded-full h-4 mt-4">
+                    <div id="finalBar" class="h-full bg-indigo-500" style="width:0%"></div>
                 </div>
-
-                <button 
-                    onclick="resetDetector()"
-                    class="mt-10 text-slate-500 hover:text-white transition-colors text-sm underline underline-offset-4"
-                >
-                    Zkusit znovu
-                </button>
+                <button onclick="resetDetector()" class="mt-6 text-sm underline">Zkusit znovu</button>
             </div>
         </div>
     </div>
 
-    <script>
-        const stages = [
-            { time: 0, text: "Navazování spojení se senzory..." },
-            { time: 1500, text: "Skenování mozkové aktivity (žádná)..." },
-            { time: 3000, text: "Kalibrace okolního hluku (aaah)..." },
-            { time: 4500, text: "Analýza dechového rytmu..." },
-            { time: 6000, text: "Vyhodnocování pohybu dihu..." },
-            { time: 7500, text: "Kontrola kondomů na skladech obchodů..." },
-            { time: 9000, text: "Generování výsledného reportu..." }
-        ];
+<script>
+function askSchoolQuestion() {
+    document.getElementById('initialState').classList.add('hidden');
+    document.getElementById('schoolQuestionState').classList.remove('hidden');
+}
 
-        function askSchoolQuestion() {
-            document.getElementById('initialState').classList.add('hidden');
-            document.getElementById('schoolQuestionState').classList.remove('hidden');
+function handleSchoolResponse(isInSchool) {
+    document.getElementById('schoolQuestionState').classList.add('hidden');
+    if (isInSchool) {
+        showResult(0);
+    } else {
+        startAnalysis();
+    }
+}
+
+function startAnalysis() {
+    document.getElementById('calculatingState').classList.remove('hidden');
+
+    const loadingBar = document.getElementById('loadingBar');
+    loadingBar.style.width = '100%';
+
+    setTimeout(async () => {
+        try {
+            const res = await fetch("https://damian-7vzu.onrender.com/percentage");
+            const data = await res.json();
+
+            showResult(data.percentage);
+        } catch (err) {
+            console.error(err);
+            showResult(0);
         }
+    }, 10000);
+}
 
-        function handleSchoolResponse(isInSchool) {
-            document.getElementById('schoolQuestionState').classList.add('hidden');
-            
-            if (isInSchool) {
-                showResult(0);
-            } else {
-                startAnalysis();
-            }
-        }
+function showResult(percentage) {
+    document.getElementById('calculatingState').classList.add('hidden');
+    document.getElementById('resultState').classList.remove('hidden');
 
-        function startAnalysis() {
-            document.getElementById('calculatingState').classList.remove('hidden');
-            
-            const loadingText = document.getElementById('loadingText');
-            const loadingBar = document.getElementById('loadingBar');
-            
-            loadingBar.style.transition = 'none';
-            loadingBar.style.width = '69%';
-            
-            setTimeout(() => {
-                loadingBar.style.transition = 'all 10000ms linear';
-                loadingBar.style.width = '100%';
-            }, 50);
+    document.getElementById('resultText').innerText = 
+        `Damián na ${percentage} % právě teď šuká.`;
 
-            stages.forEach((stage) => {
-                setTimeout(() => {
-                    if (!document.getElementById('calculatingState').classList.contains('hidden')) {
-                        loadingText.innerText = stage.text;
-                    }
-                }, stage.time);
-            });
+    document.getElementById('percentValue').innerText = `${percentage} %`;
+    document.getElementById('finalBar').style.width = percentage + "%";
+}
 
-            setTimeout(() => {
-                const randomPercent = Math.floor(Math.random() * 101);
-                showResult(randomPercent);
-            }, 10000);
-        }
+function resetDetector() {
+    location.reload();
+}
+</script>
 
-        function showResult(percentage) {
-            document.getElementById('calculatingState').classList.add('hidden');
-            document.getElementById('resultState').classList.remove('hidden');
-
-            const resultText = document.getElementById('resultText');
-            const percentValue = document.getElementById('percentValue');
-            const finalBar = document.getElementById('finalBar');
-
-            resultText.innerText = `Damián na ${percentage} % právě teď šuká.`;
-            percentValue.innerText = `${percentage} %`;
-            
-            finalBar.style.width = '0%';
-            setTimeout(() => {
-                finalBar.style.width = `${percentage}%`;
-            }, 100);
-        }
-
-        function resetDetector() {
-            document.getElementById('resultState').classList.add('hidden');
-            document.getElementById('initialState').classList.remove('hidden');
-            const loadingBar = document.getElementById('loadingBar');
-            loadingBar.style.transition = 'none';
-            loadingBar.style.width = '0%';
-        }
-    </script>
 </body>
 </html>
