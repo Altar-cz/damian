@@ -1,206 +1,215 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Šuká právě teď Damián?</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @keyframes pulse-custom {
-            0%, 100% { transform: scale(1); opacity: 1; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-        }
-        .animate-calculating {
-            animation: pulse-custom 1.5s infinite ease-in-out;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-result {
-            animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-        /* Rotace pro lilek */
-        @keyframes eggplant-spin {
-            0% { transform: rotate(0deg) scale(1); }
-            50% { transform: rotate(20deg) scale(1.2); }
-            100% { transform: rotate(0deg) scale(1); }
-        }
-        .eggplant-animate {
-            display: inline-block;
-            animation: eggplant-spin 2s infinite ease-in-out;
-            font-size: 3rem;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Šuká právě teď Damián?</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* Animace pro pulsování a zářivé efekty */
+@keyframes pulse-custom {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.08); opacity: 0.85; }
+}
+.animate-pulse-custom {
+  animation: pulse-custom 1.5s infinite ease-in-out;
+}
+
+@keyframes eggplant-spin {
+  0% { transform: rotate(0deg) scale(1); }
+  25% { transform: rotate(15deg) scale(1.1); }
+  50% { transform: rotate(-15deg) scale(1.2); }
+  75% { transform: rotate(15deg) scale(1.1); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.eggplant-animate {
+  display: inline-block;
+  animation: eggplant-spin 2s infinite ease-in-out;
+  font-size: 3rem;
+}
+
+/* Animace gradientního pozadí pro sexy efekt */
+body {
+  background: linear-gradient(135deg, #ff4d6d, #8e2de2);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+}
+@keyframes gradientBG {
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+
+/* Animace tlačítek při hover */
+.button-hover {
+  transition: all 0.3s ease;
+}
+.button-hover:hover {
+  transform: scale(1.05) rotate(-2deg);
+  box-shadow: 0 0 15px rgba(255,255,255,0.3);
+}
+</style>
 </head>
-<body class="bg-slate-950 min-h-screen flex items-center justify-center p-4 font-sans text-slate-100">
+<body class="min-h-screen flex items-center justify-center p-4 font-sans text-slate-100">
 
-    <div class="max-w-md w-full text-center">
-        <!-- 1. Úvodní stav -->
-        <div id="initialState" class="space-y-8">
-            <div class="space-y-2">
-                <h1 class="text-4xl font-bold tracking-tight bg-gradient-to-r from-indigo-400 to-cyan-400 bg-clip-text text-transparent">
-                    Šuká právě teď Damián?
-                </h1>
-                <p class="text-slate-400">Klikni pro spuštění hloubkové analýzy sexu</p>
-            </div>
-            
-            <button 
-                onclick="askSchoolQuestion()"
-                id="mainButton"
-                class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white transition-all duration-200 bg-indigo-600 font-pj rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600 hover:bg-indigo-500 shadow-xl shadow-indigo-500/20"
-            >
-                <span class="flex items-center gap-2 text-lg">
-                    Zjistit stav
-                    <span class="text-2xl transition-transform group-hover:rotate-12 group-hover:scale-110">🍑</span>
-                </span>
-            </button>
-        </div>
+<div class="max-w-md w-full text-center space-y-6">
+    <!-- 1. Úvodní stav -->
+    <div id="initialState" class="space-y-6">
+        <h1 class="text-4xl font-bold tracking-tight">Šuká právě teď Damián? 🍑</h1>
+        <p class="text-slate-100/80 italic">Klikni pro spuštění hloubkové analýzy sexu</p>
 
-        <!-- 2. Mezistupeň: Otázka na školu -->
-        <div id="schoolQuestionState" class="hidden space-y-8 animate-result">
-            <div class="bg-slate-900 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl">
-                <h2 class="text-2xl font-semibold mb-6">Je Damián právě teď ve škole?</h2>
-                <div class="grid grid-cols-2 gap-4">
-                    <button 
-                        onclick="handleSchoolResponse(true)"
-                        class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-indigo-500/10 active:scale-95"
-                    >
-                        Ano, je
-                    </button>
-                    <button 
-                        onclick="handleSchoolResponse(false)"
-                        class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-4 rounded-2xl transition-all shadow-lg shadow-indigo-500/10 active:scale-95"
-                    >
-                        Ne, není
-                    </button>
-                </div>
-            </div>
-        </div>
+        <button onclick="askSchoolQuestion()" id="mainButton"
+            class="group relative inline-flex items-center justify-center px-8 py-4 font-bold text-white bg-pink-600 rounded-full shadow-xl shadow-pink-500/30 animate-pulse-custom button-hover">
+            <span class="flex items-center gap-2 text-lg">
+                Zjistit stav
+                <span class="text-2xl">🍆</span>
+            </span>
+        </button>
+    </div>
 
-        <!-- 3. Načítání (10 vteřin) s lilkem -->
-        <div id="calculatingState" class="hidden space-y-8 animate-calculating">
-            <div class="relative flex justify-center">
-                <div class="w-28 h-28 border-4 border-indigo-500/10 border-t-indigo-500 rounded-full animate-spin"></div>
-                <div class="absolute inset-0 flex items-center justify-center">
-                    <span class="eggplant-animate">🍆</span>
-                </div>
-            </div>
-            <div class="space-y-3">
-                <p id="loadingText" class="text-xl font-medium text-indigo-300 italic h-8">Připojování k senzoru...</p>
-                <div class="w-64 mx-auto bg-slate-800 rounded-full h-1.5 overflow-hidden">
-                    <div id="loadingBar" class="bg-indigo-500 h-full w-0 transition-all duration-[10000ms] linear"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Výsledek -->
-        <div id="resultState" class="hidden space-y-6 animate-result">
-            <div class="bg-slate-900 border border-slate-800 p-10 rounded-[2.5rem] shadow-2xl relative overflow-hidden">
-                <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-500"></div>
-                
-                <p class="text-slate-400 uppercase tracking-widest text-xs font-bold mb-4">Výsledek analýzy</p>
-                <h2 id="resultText" class="text-3xl font-bold text-white leading-tight"></h2>
-                
-                <div class="mt-8">
-                    <div class="flex justify-between mb-2 text-sm font-medium">
-                        <span class="text-slate-500">Pravděpodobnost šuku</span>
-                        <span id="percentValue" class="text-indigo-400"></span>
-                    </div>
-                    <div class="w-full bg-slate-800 rounded-full h-4 p-1">
-                        <div id="finalBar" class="h-full rounded-full bg-gradient-to-r from-indigo-600 to-indigo-400 transition-all duration-1000 ease-out" style="width: 0%"></div>
-                    </div>
-                </div>
-
-                <button 
-                    onclick="resetDetector()"
-                    class="mt-10 text-slate-500 hover:text-white transition-colors text-sm underline underline-offset-4"
-                >
-                    Zkusit znovu
+    <!-- 2. Mezistupeň: Otázka na školu -->
+    <div id="schoolQuestionState" class="hidden space-y-6">
+        <div class="bg-slate-900/60 border border-slate-800 p-8 rounded-[2.5rem] shadow-2xl backdrop-blur-sm">
+            <h2 class="text-2xl font-semibold mb-6">Je Damián právě teď ve škole? 🏫</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <button onclick="handleSchoolResponse(true)" class="bg-pink-600 hover:bg-pink-500 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 button-hover">
+                    Ano, je ✅
                 </button>
+                <button onclick="handleSchoolResponse(false)" class="bg-pink-600 hover:bg-pink-500 text-white font-bold py-4 rounded-2xl shadow-lg active:scale-95 button-hover">
+                    Ne, není ❌
+                </button>
+            </div>
+
+            <p class="mt-4 text-slate-200/70 text-sm italic">Chceš zkusit i jiné jméno? 📝</p>
+            <div class="flex mt-2 gap-2 justify-center">
+                <input type="text" id="customName" placeholder="Zadej jméno..." class="p-2 rounded-xl bg-slate-800 text-white placeholder-slate-400"/>
+                <button onclick="askSchoolQuestionCustom()" class="px-4 py-2 bg-purple-600 hover:bg-purple-500 rounded-xl text-white button-hover">Go 🚀</button>
             </div>
         </div>
     </div>
 
-    <script>
-        const stages = [
-            { time: 0, text: "Navazování spojení se senzory..." },
-            { time: 1500, text: "Skenování mozkové aktivity (žádná)..." },
-            { time: 3000, text: "Kalibrace okolního hluku (aaah)..." },
-            { time: 4500, text: "Analýza dechového rytmu..." },
-            { time: 6000, text: "Vyhodnocování pohybu dihu..." },
-            { time: 7500, text: "Kontrola kondomů na skladech obchodů..." },
-            { time: 9000, text: "Generování výsledného reportu..." }
-        ];
+    <!-- 3. Načítání -->
+    <div id="calculatingState" class="hidden space-y-8 animate-pulse-custom">
+        <div class="relative flex justify-center">
+            <div class="w-28 h-28 border-4 border-pink-500/20 border-t-pink-500 rounded-full animate-spin"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <span class="eggplant-animate">🍆</span>
+            </div>
+        </div>
+        <div class="space-y-3">
+            <p id="loadingText" class="text-xl font-medium text-pink-200 italic h-8">Připojování k senzoru... 🔌</p>
+            <div class="w-64 mx-auto bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                <div id="loadingBar" class="bg-pink-500 h-full w-0 transition-all duration-[10000ms] linear"></div>
+            </div>
+        </div>
+    </div>
 
-        function askSchoolQuestion() {
-            document.getElementById('initialState').classList.add('hidden');
-            document.getElementById('schoolQuestionState').classList.remove('hidden');
-        }
-
-        function handleSchoolResponse(isInSchool) {
-            document.getElementById('schoolQuestionState').classList.add('hidden');
+    <!-- 4. Výsledek -->
+    <div id="resultState" class="hidden space-y-6">
+        <div class="bg-slate-900/60 border border-slate-800 p-10 rounded-[2.5rem] shadow-2xl backdrop-blur-sm relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 via-purple-500 to-red-500"></div>
             
-            if (isInSchool) {
-                showResult(0);
-            } else {
-                startAnalysis();
+            <p class="text-slate-100/70 uppercase tracking-widest text-xs font-bold mb-4">Výsledek analýzy 🔮</p>
+            <h2 id="resultText" class="text-3xl font-bold leading-tight">Výsledek</h2>
+            
+            <div class="mt-8">
+                <div class="flex justify-between mb-2 text-sm font-medium">
+                    <span class="text-slate-200">Pravděpodobnost šuku 💦</span>
+                    <span id="percentValue" class="text-pink-300"></span>
+                </div>
+                <div class="w-full bg-slate-800 rounded-full h-4 p-1">
+                    <div id="finalBar" class="h-full rounded-full bg-gradient-to-r from-pink-600 to-pink-400 transition-all duration-1000 ease-out" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <button onclick="resetDetector()" class="mt-10 text-slate-200 hover:text-white transition-colors text-sm underline underline-offset-4 button-hover">
+                Zkusit znovu 🔄
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+let currentName = "Damián";
+const stages = [
+    { time: 0, text: "Navazování spojení se senzory... 🔌" },
+    { time: 1500, text: "Skenování mozkové aktivity (žádná)... 🧠" },
+    { time: 3000, text: "Kalibrace okolního hluku... 🎧" },
+    { time: 4500, text: "Analýza dechového rytmu... 😮‍💨" },
+    { time: 6000, text: "Vyhodnocování pohybu dihu... 💃" },
+    { time: 7500, text: "Kontrola kondomů na skladech obchodů... 🛒" },
+    { time: 9000, text: "Generování výsledného reportu... 📄" }
+];
+
+function askSchoolQuestion() {
+    document.getElementById('initialState').classList.add('hidden');
+    document.getElementById('schoolQuestionState').classList.remove('hidden');
+}
+
+function askSchoolQuestionCustom() {
+    const nameInput = document.getElementById('customName').value.trim();
+    if(nameInput) currentName = nameInput;
+    document.getElementById('initialState').classList.add('hidden');
+    document.getElementById('schoolQuestionState').classList.remove('hidden');
+}
+
+function handleSchoolResponse(isInSchool) {
+    document.getElementById('schoolQuestionState').classList.add('hidden');
+    if (isInSchool) {
+        showResult(0);
+    } else {
+        startAnalysis();
+    }
+}
+
+function startAnalysis() {
+    document.getElementById('calculatingState').classList.remove('hidden');
+    const loadingText = document.getElementById('loadingText');
+    const loadingBar = document.getElementById('loadingBar');
+    loadingBar.style.transition = 'none';
+    loadingBar.style.width = '0%';
+    setTimeout(() => {
+        loadingBar.style.transition = 'all 10000ms linear';
+        loadingBar.style.width = '100%';
+    }, 50);
+
+    stages.forEach((stage) => {
+        setTimeout(() => {
+            if (!document.getElementById('calculatingState').classList.contains('hidden')) {
+                loadingText.innerText = stage.text;
             }
-        }
+        }, stage.time);
+    });
 
-        function startAnalysis() {
-            document.getElementById('calculatingState').classList.remove('hidden');
-            
-            const loadingText = document.getElementById('loadingText');
-            const loadingBar = document.getElementById('loadingBar');
-            
-            loadingBar.style.transition = 'none';
-            loadingBar.style.width = '0%';
-            
-            setTimeout(() => {
-                loadingBar.style.transition = 'all 10000ms linear';
-                loadingBar.style.width = '100%';
-            }, 50);
+    setTimeout(() => {
+        const randomPercent = Math.floor(Math.random() * 32) + 69; // min 69%
+        showResult(randomPercent);
+    }, 10000);
+}
 
-            stages.forEach((stage) => {
-                setTimeout(() => {
-                    if (!document.getElementById('calculatingState').classList.contains('hidden')) {
-                        loadingText.innerText = stage.text;
-                    }
-                }, stage.time);
-            });
+function showResult(percentage) {
+    document.getElementById('calculatingState').classList.add('hidden');
+    document.getElementById('resultState').classList.remove('hidden');
 
-            setTimeout(() => {
-                // nikdy méně než 69 %
-                const randomPercent = Math.floor(Math.random() * 32) + 69;
-                showResult(randomPercent);
-            }, 10000);
-        }
+    const resultText = document.getElementById('resultText');
+    const percentValue = document.getElementById('percentValue');
+    const finalBar = document.getElementById('finalBar');
 
-        function showResult(percentage) {
-            document.getElementById('calculatingState').classList.add('hidden');
-            document.getElementById('resultState').classList.remove('hidden');
+    resultText.innerText = `${currentName} na ${percentage} % právě teď šuká 💦`;
+    percentValue.innerText = `${percentage} %`;
 
-            const resultText = document.getElementById('resultText');
-            const percentValue = document.getElementById('percentValue');
-            const finalBar = document.getElementById('finalBar');
+    finalBar.style.width = '0%';
+    setTimeout(() => { finalBar.style.width = `${percentage}%`; }, 100);
+}
 
-            resultText.innerText = `Damián na ${percentage} % právě teď šuká.`;
-            percentValue.innerText = `${percentage} %`;
-            
-            finalBar.style.width = '0%';
-            setTimeout(() => {
-                finalBar.style.width = `${percentage}%`;
-            }, 100);
-        }
-
-        function resetDetector() {
-            document.getElementById('resultState').classList.add('hidden');
-            document.getElementById('initialState').classList.remove('hidden');
-            const loadingBar = document.getElementById('loadingBar');
-            loadingBar.style.transition = 'none';
-            loadingBar.style.width = '0%';
-        }
-    </script>
+function resetDetector() {
+    document.getElementById('resultState').classList.add('hidden');
+    document.getElementById('initialState').classList.remove('hidden');
+    const loadingBar = document.getElementById('loadingBar');
+    loadingBar.style.transition = 'none';
+    loadingBar.style.width = '0%';
+    currentName = "Damián";
+}
+</script>
 </body>
 </html>
